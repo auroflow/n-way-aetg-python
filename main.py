@@ -2,6 +2,7 @@ import csv
 import argparse
 import xlsxwriter
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--source", default="input.csv", help="path to the CSV source file")
 parser.add_argument("-d", "--destination", default='output.xlsx', help="path to destination folder")
@@ -24,10 +25,11 @@ except FileNotFoundError:
     quit()
 
 v_count = [len(param) for param in params]
+
 if args.dimension == 2:
-    from aetg import AETG
+    from aetg_pairwise import AETG
 else:
-    from aetg_n_way import AETG
+    from aetg import AETG
 
 aetg = AETG(v_count, dim=args.dimension)
 cases = aetg.generate()
