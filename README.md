@@ -29,9 +29,12 @@ options:
                         path to destination folder
   -n DIMENSION, --dimension DIMENSION
                         dimension of coverage required
+```
+
+```bash
 (venv) $ python main.py --source jd.csv --destination output.xlsx --dimension 3
 13364 combinations to cover.
-100%|█████████████████████████████████| 13364/13364 [00:29<00:00, 407.96it/s, 2069 cases generated]
+100%|██████████████████████████| 13364/13364 [00:29<00:00, 407.96it/s, 2069 cases generated]
 Done.
 ```
 
@@ -39,6 +42,6 @@ If arguments are not provided, the program will try to read input from `input.cs
 
 Two sample data files:
 
-- `index.csv` (Longce Testing Platform)
+- `input.csv` (Longce Testing Platform)
 - `jd.csv` (JD's searching page)
 
