@@ -7,7 +7,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--source", default="input.csv", help="path to the CSV source file")
 parser.add_argument("-d", "--destination", default='output.xlsx', help="path to destination folder")
 parser.add_argument("-n", "--dimension", type=int, default=2, help="dimension of coverage required")
-parser.add_argument("-t", "--test", help="validate test cases generated")
 
 args = parser.parse_args()
 
