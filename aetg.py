@@ -32,7 +32,8 @@ class AETG:
         self.v_count = [int(i) for i in v_count]
         self.dim = dim
         self.M = num_random_cases
-        self.p_pairs, self.uncovered = generate_pairs(self.v_count, dim=self.dim)
+        self.p_pairs, self.uncovered = generate_pairs(
+            self.v_count, dim=self.dim)
         # test cases generated with AETG algorithm
         self.cases = None
 
@@ -45,7 +46,8 @@ class AETG:
         p_pairs, uncovered = generate_pairs(self.v_count, dim=self.dim)
         # all `part_p_pair`s & and `part_pair`s
         # used for finding the values of the first N-1 params in each iteration.
-        part_p_pairs, part_pairs = generate_pairs(self.v_count, dim=self.dim - 1)
+        part_p_pairs, part_pairs = generate_pairs(
+            self.v_count, dim=self.dim - 1)
         # number of occurrences of every `part_pair` in uncovered `pair`s
         occurrence = dict()
         initial_occurrence = dict()
@@ -54,9 +56,11 @@ class AETG:
             remaining_params = list(range(len(self.v_count)))
             for p in part_p_pair:
                 remaining_params.remove(p)
-            initial_occurrence[part_p_pair] += sum([self.v_count[p] for p in remaining_params])
+            initial_occurrence[part_p_pair] += sum(
+                [self.v_count[p] for p in remaining_params])
         for part_pair in part_pairs:
-            occurrence[part_pair] = initial_occurrence[tuple(pv_pair[0] for pv_pair in part_pair)]
+            occurrence[part_pair] = initial_occurrence[tuple(
+                pv_pair[0] for pv_pair in part_pair)]
 
         print(len(uncovered), "combinations to cover.")
         qbar = tqdm(total=len(uncovered))
@@ -64,7 +68,8 @@ class AETG:
             # First generate self.M different candidate test cases.
             # Choose a `part_pair` that appears in the greatest number of uncovered pairs
             # for the first (N-1) parameter values
-            chosen_part_pair = list(max(occurrence.items(), key=lambda x: x[-1])[0])
+            chosen_part_pair = list(
+                max(occurrence.items(), key=lambda x: x[-1])[0])
             chosen_part_pair.sort()
             candidates = []
             for __ in range(self.M):
@@ -78,14 +83,16 @@ class AETG:
                 # Then choose a random order for the remaining parameters.
                 f[self.dim - 1:] = random.sample(f[self.dim - 1:], len(f) - self.dim + 1)
                 # For each possible value v for f[j], find the number of new pairs in the set
-                # of pairs {f[j] = v and f[i] = v[i] for 1 <= i < j}. Then, let v[j] be one of
-                # the values that appeared in the greatest number of new pairs.
+                # of pairs {f_i_1 = v_i_1, ..., f_i_{N-1} = v_i_{N-1}, f_j = v} where
+                # 1 <= i_1 < ... < i_{N-1} < j. Then, let v[j] be one of the values that
+                # appeared in the greatest number of new pairs.
                 for j, p_j in enumerate(f[self.dim - 1:], self.dim - 1):
                     new_pair_count = [0] * self.v_count[p_j]
                     for v_j in range(self.v_count[p_j]):
                         for part_p_pair in itertools.combinations(f[0:j], self.dim - 1):
                             p_pair = sorted(part_p_pair + (p_j,))
-                            pair = tuple(zip(p_pair, (case[p] if p != p_j else v_j for p in p_pair)))
+                            pair = tuple(
+                                zip(p_pair, (case[p] if p != p_j else v_j for p in p_pair)))
                             if pair in uncovered:
                                 new_pair_count[v_j] += 1
                     v_j = new_pair_count.index(max(new_pair_count))
